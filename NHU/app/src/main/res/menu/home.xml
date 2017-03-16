@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/toolbar_create"
+        android:orderInCategory="100"
+        android:title="Create Event"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/toolbar_host"
+        android:orderInCategory="101"
+        android:title="Hosting" />
+    <item
+        android:id="@+id/toolbar_join"
+        android:orderInCategory="102"
+        android:title="Joined" />
+    <item
+        android:id="@+id/toolbar_hitup"
+        android:orderInCategory="103"
+        android:title="Find HitUp" />
+    <item
+        android:id="@+id/toolbar_logout"
+        android:orderInCategory="104"
+        android:title="Logout" />
+</menu>
