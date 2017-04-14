@@ -19,6 +19,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -128,6 +129,8 @@ public class Home extends AppCompatActivity
                 startActivity(four);
                 return true;
             case R.id.nav_logout:
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                auth.signOut();
                 Intent logout = new Intent(this,login.class);
                 startActivity(logout);
                 return true;
