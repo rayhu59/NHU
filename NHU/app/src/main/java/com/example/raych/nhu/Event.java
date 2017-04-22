@@ -5,8 +5,9 @@ import java.io.Serializable;
 
 public class Event implements Serializable{
 
-    String name, description, location, id , image, cost, time, date;
-    String rating;
+    private String name, description, location, guests , image, cost, time, date ="";
+    private String youtubelink= "";
+    //variable must have same casing as database
 
     public Event() {
 
@@ -36,20 +37,20 @@ public class Event implements Serializable{
         this.location = location;
     }
 
-    public String getId() {
-        return id;
+    public String getGuests() {
+        return guests;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setGuests(String guests) {
+        this.guests = guests;
     }
 
-    public String getRating() {
-        return rating;
+    public String getYoutubeLink() {
+        return youtubelink;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setYoutubeLink(String youtubeLink) {
+        this.youtubelink = youtubeLink;
     }
 
     public String getImage() {
@@ -64,7 +65,7 @@ public class Event implements Serializable{
         return cost;
     }
 
-    public void setCost(String stars) {
+    public void setCost(String cost) {
         this.cost = cost;
     }
 

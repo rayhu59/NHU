@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -150,18 +151,37 @@ public class login extends AppCompatActivity {
             return;
         }
 
+
         mAuth.createUserWithEmailAndPassword(userNameET.getText().toString(),passwordET.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Snackbar snackbar = Snackbar.make(userNameET, USER_CREATION_SUCCESS, Snackbar.LENGTH_SHORT);
                     snackbar.show();
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user != null) {
+                        Log.e("AfterCreation", user.getEmail());
+                        String email = user.getEmail();
+                        //Parse email to remove special chars for firebase
+                        String parse = (email.split("@"))[0];
+                        parse = parse.replaceAll("[^A-Za-z0-9]","");
+                        User user2 = new User(parse);
+                       // user2.AddtoHosting("hello");
+                        //user2.AddtoHosting("three");
+                        //user2.AddtoHosting("four");
+                        //user2.AddtoJoined("hello2");
+                        UserData userData=  new UserData();
+                        userData.addUserToServer(user2);
+                    }
                 }else{
                     Snackbar snackbar = Snackbar.make(userNameET, USER_CREATION_ERROR, Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 }
             }
         });
+
+
+
     }
 
 

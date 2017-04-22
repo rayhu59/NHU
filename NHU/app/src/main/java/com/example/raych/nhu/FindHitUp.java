@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class FindHitUp extends AppCompatActivity {
 
@@ -17,6 +20,10 @@ public class FindHitUp extends AppCompatActivity {
         setContentView(R.layout.activity_find_hit_up);
         Toolbar toolbar = (Toolbar) findViewById(R.id.store_toolbar);
         setSupportActionBar(toolbar);
+
+
+
+
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.raych.nhu;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,27 +22,43 @@ import java.util.Map;
  * Created by donnale on 4/20/17.
  */
 
-public class MyHostAdapter extends RecyclerView.Adapter<MyHostAdapter.ViewHolder> {
+public class MyHostAdapter extends FirebaseRecyclerAdapter<Event, MyHostAdapter.ViewHolder> {
 
     static List<Map<String, ?>> mItems;
     static OnItemClickListener mItemClickListener;
-    Context context;
-//    Boolean sorted = false;
-//
-//
-//    public void sorted(Boolean x){
-//        sorted = x;
-//    }
+    Context mcontext;
+
+    public MyHostAdapter(Class<Event> eventClass, int joined_card, Class<ViewHolder> viewHolderClass, DatabaseReference childRef, Context context) {
+        super(eventClass,joined_card,viewHolderClass,childRef);
+        this.mcontext = context;
+    }
+
+    @Override
+    protected void populateViewHolder(ViewHolder viewHolder, Event e, int position) {
+        String name2 =  e.getName();
+        String description2 = e.getDescription();
+        String location2 =  e.getLocation();
+        String guestsNumber2 =  e.getGuests();
+        String time2 =  e.getTime();
+        String date2 =  e.getDate();
+        String cost2 =  e.getCost();
+        String Youtube2 = e.getYoutubeLink();
+        Log.v("CHECK", Youtube2);
+        viewHolder.name.setText(name2);
+        viewHolder.location.setText(location2);
+        viewHolder.num_guests.setText(guestsNumber2);
+        viewHolder.date.setText(date2);
+
+    }
 
 
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
-        public TextView name;
+    public static class ViewHolder extends RecyclerView.ViewHolder  {
+        public  TextView name;
         public TextView location;
         public TextView num_guests;
         public TextView date;
         public ImageView icon;
-        public CheckBox checkBox;
+
 
 
         public ViewHolder(View view) {
@@ -48,16 +68,9 @@ public class MyHostAdapter extends RecyclerView.Adapter<MyHostAdapter.ViewHolder
             num_guests = (TextView) view.findViewById(R.id.hostcard_num_guests);
             date = (TextView) view.findViewById(R.id.hostcard_eventDate);
             icon = (ImageView) view.findViewById(R.id.hostcard_event_icon);
-            checkBox = (CheckBox) view.findViewById(R.id.hostcard_checkBox);
 
-//            name = (TextView) view.findViewById(R.id.joincard_eventName);
-//            location = (TextView) view.findViewById(R.id.joincard_eventLocation);
-//            num_guests = (TextView) view.findViewById(R.id.joincard_cost);
-//            date = (TextView) view.findViewById(R.id.joincard_eventDate);
-//            icon = (ImageView) view.findViewById(R.id.joincard_event_icon);
-//            checkBox = (CheckBox) view.findViewById(R.id.joincard_checkBox);
 
-            checkBox.setOnCheckedChangeListener(this);
+
 
             view.setOnClickListener(new View.OnClickListener() {
 
@@ -71,96 +84,27 @@ public class MyHostAdapter extends RecyclerView.Adapter<MyHostAdapter.ViewHolder
                 }
             });
 
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    if (mItemClickListener != null) {
-                        if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                            mItemClickListener.onItemLongClick(v, getAdapterPosition());
-                        }
-                    }
-                    return true;
-                }
-            });
+
         }
 
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-            HashMap movie = (HashMap) mItems.get(getAdapterPosition());
-                if (isChecked) {
-                    movie.put("selection", true);
 
-                } else {
-                    movie.put("selection", false);
-                }
-        }
     }
 
         public interface OnItemClickListener {
             public void onItemClick(View view, int position);
-            public void onItemLongClick(View view, int position);
-            //public void onOverflowMenuClick(View view, int position);
         }
 
         public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
             this.mItemClickListener = mItemClickListener;
         }
 
-        public MyHostAdapter(Context context, List<Map<String,?>> items){
-            mItems = items;
-            this.context = context;
-        }
-
+        /*
         @Override
         public MyHostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.hosting_card, parent, false);
             return new ViewHolder(v);
         }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            HashMap<String, ?> movie = (HashMap) mItems.get(position);
-            holder.icon.setImageResource((Integer) movie.get("image"));
-            holder.name.setText((String) movie.get("name"));
-            holder.location.setText((String) movie.get("director"));
-            holder.num_guests.setText((String) movie.get("year"));
-            holder.date.setText((String) movie.get("stars"));
-            holder.checkBox.setChecked((Boolean) movie.get("selection"));
-//            holder.icon.setImageResource((Integer) movie.get("image"));
-//            holder.name.setText((String) movie.get("name"));
-//            holder.location.setText((String) movie.get("director"));
-//            holder.num_guests.setText(String.valueOf(movie.get("rating")));
-//            holder.date.setText((String) movie.get("stars"));
-//            holder.checkBox.setChecked((Boolean) movie.get("selection"));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mItems.size();
-        }
-//
-//    @Override
-//    public int getItemViewType(int position){
-//
-//        int num = 0;
-//        if (sorted){
-//            if (position < 5){
-//                num = 1;
-//            }
-//
-//            if (position >= 5 && position < 25){
-//                num = 2;
-//            }
-//
-//            if (position >= 25){
-//                num = 3;
-//            }
-//        }
-//        else
-//            num = 0;
-//
-//        return num;
-//    }
+        */
 
 
 

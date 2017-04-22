@@ -1,6 +1,7 @@
 package com.example.raych.nhu;;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +12,7 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class JoinedEvents extends AppCompatActivity {
+public class JoinedEvents extends AppCompatActivity implements joined_rv_fragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,5 +70,10 @@ public class JoinedEvents extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
