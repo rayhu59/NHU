@@ -6,4 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.raych.nhu.FindHitUp">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:background="@color/greyWhite"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/store_toolbar"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp" />
+
 </android.support.constraint.ConstraintLayout>

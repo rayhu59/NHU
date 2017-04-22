@@ -22,6 +22,7 @@ public class CreateEvent extends AppCompatActivity {
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         tb.setTitle("Create Event");
+        setSupportActionBar(tb);
 
 
     }
