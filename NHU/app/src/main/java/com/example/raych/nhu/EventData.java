@@ -26,6 +26,8 @@ public class EventData {
     DatabaseReference mRef;
     DatabaseReference mRef_User;
     Context mContext;
+    List hosted = new ArrayList<String>();
+    List joined = new ArrayList<String>();
 
     public EventData() {
         mRef = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
@@ -33,6 +35,14 @@ public class EventData {
         mContext = null;
     }
 
+    public List getHostList() {
+        hosting_joined();
+        return hosted;
+    }
+    public List getJoinedList(){
+        hosting_joined();
+        return joined;
+    }
 
     public DatabaseReference getFireBaseRef(){
         return mRef;
@@ -47,6 +57,30 @@ public class EventData {
         } */
     }
 
+    public void hosting_joined() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String email = user.getEmail();
+            String parse = (email.split("@"))[0];
+            parse = parse.replaceAll("[^A-Za-z0-9]", "");
+            DatabaseReference host  =mRef_User.child(parse);
+            final String finalParse = parse;
+            host.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Map<String,User> user = (Map<String, User>) dataSnapshot.getValue();
+                    hosted = (List) user.get("hosting");
+                    joined = (List) user.get("joined");
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
 
     public void addItemToServer(final Event event){
         if(event!=null){
@@ -84,8 +118,8 @@ public class EventData {
 
             }
 
-            Map<String, Event> event2 = new HashMap<String ,Event>();
-            event2.put(event.getName(), event);
+            // Map<String, Event> event2 = new HashMap<String ,Event>();
+           // event2.put(event.getName(), event);
             mRef.child(event.getName()).setValue(event);
         }
     }

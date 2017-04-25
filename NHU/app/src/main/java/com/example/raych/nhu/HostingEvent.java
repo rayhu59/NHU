@@ -1,6 +1,7 @@
 package com.example.raych.nhu;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +15,7 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class HostingEvent extends AppCompatActivity{
+public class HostingEvent extends AppCompatActivity implements host_rv_fragment.OnFragmentInteractionListener{
 
 
     @Override
@@ -28,11 +29,11 @@ public class HostingEvent extends AppCompatActivity{
         tb.setTitle("Events I Host");
         setSupportActionBar(tb);
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.add(R.id.host_rv_fragment_frame, new host_rv_fragment());
-        fragmentTransaction.commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.host_rv_fragment_frame,host_rv_fragment.newInstance("new"))
+                .addToBackStack(null
 
+                ).commit();
     }
 
     public void fabClick(View v){
@@ -84,5 +85,10 @@ public class HostingEvent extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

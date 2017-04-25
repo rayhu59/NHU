@@ -13,7 +13,7 @@ public class Store_TabAdapter  extends FragmentPagerAdapter implements Store_Pop
 Store_Top_Paid.OnFragmentInteractionListener,Store_Top_Free.OnFragmentInteractionListener{
 
     final int tab_count =3;  //number of tabs in Store Activity
-    private String tab_titles[] = new String[] {"Popular","Top Free","Top Paid"};
+    private String tab_titles[] = new String[] {"Fresh","Top Free","Top Paid"};
 
     public Store_TabAdapter(FragmentManager fm) {
         super(fm);

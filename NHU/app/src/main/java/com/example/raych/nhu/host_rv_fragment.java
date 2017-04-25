@@ -1,73 +1,155 @@
 package com.example.raych.nhu;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
- * Created by donnale on 4/20/17.
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link host_rv_fragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link host_rv_fragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
+public class host_rv_fragment extends android.support.v4.app.Fragment implements Event_Info_frag.OnFragmentInteractionListener {
 
-public class host_rv_fragment extends android.support.v4.app.Fragment {
-
+    private static final String  param1 = "param1";
+    private String mParam1;
+    private OnFragmentInteractionListener mListener;
+    DatabaseReference mRef_User;
     RecyclerView rv_hosting;
-    MyHostAdapter myHostAdapter;
     RecyclerView.LayoutManager layoutManager;
-    //MovieData movieData = new MovieData();
+    EventData eventData = new EventData();
     CustomOnClickListener myListener;
+    List data;
+
+    public host_rv_fragment() {
+        // Required empty public constructor
+    }
+
+
+    // TODO: Rename and change types and number of parameters
+    public static host_rv_fragment newInstance(String instance) {
+        host_rv_fragment fragment = new host_rv_fragment();
+        Bundle args = new Bundle();
+        args.putString(param1, instance);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(param1);
+
+        }
+    }
+
+    DatabaseReference childRef;
+    //MyHostAdapter myHostAdapter;
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        final View currentView = inflater.inflate(R.layout.fragment_host_rv_fragment, container, false);
+        mRef_User = FirebaseDatabase.getInstance().getReference().child("userdata").getRef();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            String email = user.getEmail();
+            String parse = (email.split("@"))[0];
+            parse = parse.replaceAll("[^A-Za-z0-9]", "");
+            DatabaseReference host  =mRef_User.child(parse);
+            final String finalParse = parse;
+            host.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Map<String,User> user = (Map<String, User>) dataSnapshot.getValue();
+                    data = (List) user.get("hosting");
+                    data.remove(0);
+                    rv_hosting = (RecyclerView) currentView.findViewById(R.id.my_hosting_recycler_view);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    rv_hosting.setLayoutManager(layoutManager);
+                    final HostAdapter adapter = new HostAdapter(getActivity(), data);
+                    rv_hosting.setAdapter(adapter);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+        return currentView;
+
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View currentView = inflater.inflate(R.layout.host_rv_fragment_layout, container, false);
-
-       // myListener = (CustomOnClickListener) currentView.getContext();
-        rv_hosting = (RecyclerView) currentView.findViewById(R.id.my_hosting_recycler_view);
-        rv_hosting.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(currentView.getContext());
-        rv_hosting.setLayoutManager(layoutManager);
-//        myHostAdapter = new MyHostAdapter(getActivity(), movieData.getMoviesList());
-//        rv_hosting.setAdapter(new SlideInBottomAnimationAdapter(myHostAdapter));
-
-
-
-//        myHostAdapter.SetOnItemClickListener(new MyHostAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                myListener.onRVclicked(position);
-//            }
-//
-//            @Override
-//            public void onItemLongClick(View view, int position) {
-//                //movieData.add
-//                HashMap movie = (HashMap)((HashMap) movieData.getItem(position)).clone();
-//                movieData.getMoviesList().add(position+1, movie);
-//                //notify ad
-//                myHostAdapter.notifyItemInserted(position+1);
-//            }
-//        });
-
-        return currentView;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
 }

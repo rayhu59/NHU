@@ -24,10 +24,9 @@ public class JoinedEvents extends AppCompatActivity implements joined_rv_fragmen
         tb.setTitle("Events I Joined");
         setSupportActionBar(tb);
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.add(R.id.joined_rv_fragment_frame, new joined_rv_fragment());
-        fragmentTransaction.commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.joined_rv_fragment_frame, joined_rv_fragment.newInstance("new"))
+                .addToBackStack(null).commit();
     }
 
     @Override

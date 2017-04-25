@@ -1,5 +1,9 @@
 package com.example.raych.nhu;
 
+/**
+ * Created by raych on 4/24/2017.
+ */
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,13 +26,13 @@ import java.util.Map;
  * Created by donnale on 4/20/17.
  */
 
-public class MyHostAdapter extends FirebaseRecyclerAdapter<Event, MyHostAdapter.ViewHolder> {
+public class StoreAdapter extends FirebaseRecyclerAdapter<Event, StoreAdapter.ViewHolder> {
 
     static List<Map<String, ?>> mItems;
     static OnItemClickListener mItemClickListener;
     Context mcontext;
 
-    public MyHostAdapter(Class<Event> eventClass, int joined_card, Class<ViewHolder> viewHolderClass, DatabaseReference childRef, Context context) {
+    public StoreAdapter(Class<Event> eventClass, int joined_card, Class<ViewHolder> viewHolderClass, DatabaseReference childRef, Context context) {
         super(eventClass,joined_card,viewHolderClass,childRef);
         this.mcontext = context;
     }
@@ -63,11 +67,11 @@ public class MyHostAdapter extends FirebaseRecyclerAdapter<Event, MyHostAdapter.
 
         public ViewHolder(View view) {
             super(view);
-            name = (TextView) view.findViewById(R.id.hostcard_eventName);
-            location = (TextView) view.findViewById(R.id.hostcard_eventLocation);
-            num_guests = (TextView) view.findViewById(R.id.hostcard_num_guests);
-            date = (TextView) view.findViewById(R.id.hostcard_eventDate);
-            icon = (ImageView) view.findViewById(R.id.hostcard_event_icon);
+            //  name = (TextView) view.findViewById(R.id.hostcard_eventName);
+            //  location = (TextView) view.findViewById(R.id.hostcard_eventLocation);
+            //  num_guests = (TextView) view.findViewById(R.id.hostcard_num_guests);
+            //  date = (TextView) view.findViewById(R.id.hostcard_eventDate);
+            //  icon = (ImageView) view.findViewById(R.id.hostcard_event_icon);
 
 
 
@@ -90,13 +94,13 @@ public class MyHostAdapter extends FirebaseRecyclerAdapter<Event, MyHostAdapter.
 
     }
 
-        public interface OnItemClickListener {
-            public void onItemClick(View view, int position);
-        }
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
+    }
 
-        public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
-            this.mItemClickListener = mItemClickListener;
-        }
+    public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
+    }
 
         /*
         @Override
@@ -109,3 +113,4 @@ public class MyHostAdapter extends FirebaseRecyclerAdapter<Event, MyHostAdapter.
 
 
 }
+

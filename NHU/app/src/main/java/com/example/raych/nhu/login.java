@@ -166,10 +166,8 @@ public class login extends AppCompatActivity {
                         String parse = (email.split("@"))[0];
                         parse = parse.replaceAll("[^A-Za-z0-9]","");
                         User user2 = new User(parse);
-                       // user2.AddtoHosting("hello");
-                        //user2.AddtoHosting("three");
-                        //user2.AddtoHosting("four");
-                        //user2.AddtoJoined("hello2");
+                        user2.AddtoHosting("placeholder");
+                        user2.AddtoJoined("placeholder");
                         UserData userData=  new UserData();
                         userData.addUserToServer(user2);
                     }
