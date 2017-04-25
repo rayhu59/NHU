@@ -64,7 +64,6 @@ public class CreateEvent extends AppCompatActivity {
         newEvent.setGuests("0");
         newEvent.setYoutubeLink(eventYoutubeLink);
 
-        //eventData.setContext(this);
         eventData.addItemToServer(newEvent);
 
         Intent gohome = new Intent(this,Home.class);
@@ -88,6 +87,10 @@ public class CreateEvent extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.toolbar_home:
+                Intent zero = new Intent(this,Home.class);
+                startActivity(zero);
+                return true;
             case R.id.toolbar_create:
                 Intent one = new Intent(this,CreateEvent.class);
                 startActivity(one);

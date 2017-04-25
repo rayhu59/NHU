@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class JoinedEvents extends AppCompatActivity implements joined_rv_fragment.OnFragmentInteractionListener {
+public class JoinedEvents extends AppCompatActivity implements joined_rv_fragment.OnFragmentInteractionListener, Event_Info_frag.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,10 @@ public class JoinedEvents extends AppCompatActivity implements joined_rv_fragmen
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.toolbar_home:
+                Intent zero = new Intent(this,Home.class);
+                startActivity(zero);
+                return true;
             case R.id.toolbar_create:
                 Intent one = new Intent(this,CreateEvent.class);
                 startActivity(one);

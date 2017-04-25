@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Event implements Serializable{
 
-    private String name, description, location, guests , image, cost, time, date ="";
+    private String name, description, location, guests , image, cost, time, date, lat, lng ="";
     private String youtubelink= "";
     //variable must have same casing as database
 
@@ -20,6 +20,12 @@ public class Event implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setLat(String lat2){ this.lat = lat2;}
+    public void setLng(String lng2) { this.lng = lng2;}
+
+    public String getLat(){return lat;}
+    public String getLng() {return lng;}
 
     public String getDescription() {
         return description;

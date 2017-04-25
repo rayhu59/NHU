@@ -41,6 +41,10 @@ public class FindHitUp extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.toolbar_home:
+                Intent zero = new Intent(this,Home.class);
+                startActivity(zero);
+                return true;
             case R.id.toolbar_create:
                 Intent one = new Intent(this,CreateEvent.class);
                 startActivity(one);

@@ -1,6 +1,7 @@
 package com.example.raych.nhu;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -11,6 +12,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +33,9 @@ public class EventData {
     Context mContext;
     List hosted = new ArrayList<String>();
     List joined = new ArrayList<String>();
+    String lat;
+    String longt;
+    Event currentEvent;
 
     public EventData() {
         mRef = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
@@ -84,7 +92,7 @@ public class EventData {
 
     public void addItemToServer(final Event event){
         if(event!=null){
-
+            currentEvent = event;
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 String email = user.getEmail();
@@ -117,10 +125,58 @@ public class EventData {
 
 
             }
+            new GetCoordinates().execute(event.getLocation().toString().replace(" ","+"));
+            //add this in post execution of Asnyc task
+           // mRef.child(event.getName()).setValue(event);  //Adds event to eventdata database
 
-            // Map<String, Event> event2 = new HashMap<String ,Event>();
-           // event2.put(event.getName(), event);
-            mRef.child(event.getName()).setValue(event);
+
+
+        }
+    }
+
+    //Source Code obtain from https://github.com/eddydn/GetCoordinatesGeocode
+    private class GetCoordinates extends AsyncTask<String,Void,String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String response;
+            try{
+                String address = strings[0];
+                HttpDataHandler http = new HttpDataHandler();
+                String url = String.format("https://maps.googleapis.com/maps/api/geocode/json?address=%s",address);
+                response = http.getHTTPData(url);
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try{
+                JSONObject jsonObject = new JSONObject(s);
+
+                String lat = ((JSONArray)jsonObject.get("results")).getJSONObject(0).getJSONObject("geometry")
+                        .getJSONObject("location").get("lat").toString();
+                String lng = ((JSONArray)jsonObject.get("results")).getJSONObject(0).getJSONObject("geometry")
+                        .getJSONObject("location").get("lng").toString();
+
+                Log.d("LATLNG", "lat: " + lat + " long: "+ lng);
+                currentEvent.setLat(lat);
+                currentEvent.setLng(lng);
+                mRef.child(currentEvent.getName()).setValue(currentEvent);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

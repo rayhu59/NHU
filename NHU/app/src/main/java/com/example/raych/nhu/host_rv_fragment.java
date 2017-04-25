@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,11 +39,13 @@ public class host_rv_fragment extends android.support.v4.app.Fragment implements
     private String mParam1;
     private OnFragmentInteractionListener mListener;
     DatabaseReference mRef_User;
+    DatabaseReference mRef_Event;
     RecyclerView rv_hosting;
     RecyclerView.LayoutManager layoutManager;
     EventData eventData = new EventData();
     CustomOnClickListener myListener;
     List data;
+    RecyclerView recyclerView;
 
     public host_rv_fragment() {
         // Required empty public constructor
@@ -66,7 +71,7 @@ public class host_rv_fragment extends android.support.v4.app.Fragment implements
     }
 
     DatabaseReference childRef;
-    //MyHostAdapter myHostAdapter;
+
 
 
     @Override
@@ -76,26 +81,65 @@ public class host_rv_fragment extends android.support.v4.app.Fragment implements
 
         final View currentView = inflater.inflate(R.layout.fragment_host_rv_fragment, container, false);
         mRef_User = FirebaseDatabase.getInstance().getReference().child("userdata").getRef();
+        mRef_Event = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         if (user != null) {
             String email = user.getEmail();
             String parse = (email.split("@"))[0];
             parse = parse.replaceAll("[^A-Za-z0-9]", "");
-            DatabaseReference host  =mRef_User.child(parse);
+            DatabaseReference host = mRef_User.child(parse);
             final String finalParse = parse;
             host.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Map<String,User> user = (Map<String, User>) dataSnapshot.getValue();
+                    Map<String, User> user = (Map<String, User>) dataSnapshot.getValue();
                     data = (List) user.get("hosting");
                     data.remove(0);
-                    rv_hosting = (RecyclerView) currentView.findViewById(R.id.my_hosting_recycler_view);
+                    //data.add("hello");
+                    recyclerView = (RecyclerView) currentView.findViewById(R.id.my_hosting_recycler_view);
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                    rv_hosting.setLayoutManager(layoutManager);
+                    recyclerView.setLayoutManager(layoutManager);
                     final HostAdapter adapter = new HostAdapter(getActivity(), data);
-                    rv_hosting.setAdapter(adapter);
+                    recyclerView.setAdapter(adapter);
+
+                    adapter.SetOnItemClickListener(new HostAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            String eventname = data.get(position).toString();
+                            final DatabaseReference event = mRef_Event.child(eventname);
+
+                            event.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    HashMap e = (HashMap) dataSnapshot.getValue();
+
+                                    Event event2 = new Event();
+                                    event2.setName(e.get("name").toString());
+                                    event2.setLocation(e.get("location").toString());
+                                    event2.setCost(e.get("cost").toString());
+                                    event2.setDate(e.get("date").toString());
+                                    event2.setTime(e.get("time").toString());
+                                    event2.setDescription(e.get("description").toString());
+
+                                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                                    fragmentTransaction.replace(R.id.host_rv_fragment_frame, Event_Info_frag.newInstance(event2));
+                                    fragmentTransaction.addToBackStack(null);
+                                    fragmentTransaction.commit();
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }
+
+                    });
                 }
+
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -103,7 +147,6 @@ public class host_rv_fragment extends android.support.v4.app.Fragment implements
                 }
             });
         }
-
 
         return currentView;
 

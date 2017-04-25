@@ -34,13 +34,25 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback
         , GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
+
+    DatabaseReference mRef;
+
 
     protected GoogleMap mMap;
     protected Marker mCurrentLocationMarker;
@@ -121,6 +133,7 @@ public class Home extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -149,6 +162,10 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.toolbar_home:
+                Intent zero = new Intent(this,Home.class);
+                startActivity(zero);
+                return true;
             case R.id.toolbar_create:
                 Intent one = new Intent(this,CreateEvent.class);
                 startActivity(one);
@@ -346,6 +363,87 @@ public class Home extends AppCompatActivity
     }
 
 
+    /*
+    public void addPlaces(double lat, double lng, String name, String id) {
+        // format this places location
+
+        LatLng event = new LatLng(lat,lng);
+
+        // add this places location marker
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(currentLocation);
+        markerOptions.title(name);
+        markerOptions.snippet(id);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        mMap.addMarker(markerOptions);
+
+
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            // Use default InfoWindow frame
+            @Override
+            public View getInfoWindow(Marker selectMarker) {
+                return null;
+            }
+
+            // Defines the contents of the InfoWindow
+            @Override
+            public View getInfoContents(Marker selectMarker) {
+                Log.i(TAG, "Info Window triggered on " + selectMarker.getTitle()+  "\tID: " + selectMarker.getSnippet());
+                View v = getLayoutInflater().inflate(R.layout.event_window, null);
+
+                // get the position of the marker selected
+                LatLng latLng = selectMarker.getPosition();
+
+                // move camera to center on the selected marker
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+
+                TextView pName = (TextView) v.findViewById(R.id.popup_name);
+                TextView pRating = (TextView) v.findViewById(R.id.popup_rating);
+                TextView pType = (TextView) v.findViewById(R.id.popup_type);
+                TextView pAddress = (TextView) v.findViewById(R.id.popup_address);
+                pAddress.setText(""+latLng.latitude + " long: " +latLng.longitude);
+
+
+                v.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                pName.setText(clickedLandmark.getName());
+
+
+                GeocodeRequest geoRequest = new GeocodeRequest(clickedLandmark.getLatitude(), clickedLandmark.getLongitude());
+                geoRequest.execute();
+                /*
+                // Hold for time to update result
+                try {
+                    Log.i("Geocode API", "Waiting for process to catch up");
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                pAddress.setText(mGeoAddr);
+
+                return v;
+            }
+        });
+
+        mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+            @Override
+            public void onInfoWindowLongClick(Marker marker) {
+                //stuff goes here
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.home_container,Event_Info_frag.newInstance("new","new"))
+                    .addToBackStack(null).commit();
+            }
+        });
+    }
+        */
+
+
+
+
 
 
     /**
@@ -529,6 +627,21 @@ public class Home extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mRef = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                     Log.d("firebasedata2", snapshot.getKey());
+                     Log.d("FirebaseData",snapshot.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         Log.e(TAG, "Map is Ready");
@@ -564,42 +677,4 @@ public class Home extends AppCompatActivity
 
     }
 
-    public void addPlaces(double lat, double lng, String name, String id) {
-        // format this places location
-        LatLng currentLocation = new LatLng(lat,lng);
-
-        // add this places location marker
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(currentLocation);
-        markerOptions.title(name);
-        markerOptions.snippet(id);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        mMap.addMarker(markerOptions);
-
-        /**
-         * handle marker click event
-         */
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                try {
-                    if (marker.getTitle().equals("Current Location")) {
-                        // DO NOT SHOW INFO WINDOW FOR USER'S LOCATION -- MAYBE ADD LATER BUT NEED DIFFERENT WINDOW
-                        return true;
-                    }
-
-                    mClickedLocationMarker = marker;
-                    marker.showInfoWindow();
-                    Log.i(TAG, "Info Window triggered on " + mClickedLocationMarker.getTitle() + "\tID: " + mClickedLocationMarker.getSnippet());
-                    return true;
-                } catch (Exception e) {
-                    Log.e(TAG, "Info Window cannot be display");
-                    return false;
-                }
-            }
-
-        });
-
-
-    }
 }

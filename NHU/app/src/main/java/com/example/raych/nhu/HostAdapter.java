@@ -21,9 +21,7 @@ import java.util.List;
 public class HostAdapter extends RecyclerView.Adapter<HostAdapter.ViewHolder>  {
     List eventdata;
     Context cont;
-
-
-
+    static OnItemClickListener mItemClickListener;
 
     public HostAdapter(Context context,List data) {
         eventdata = data;
@@ -45,6 +43,15 @@ public class HostAdapter extends RecyclerView.Adapter<HostAdapter.ViewHolder>  {
 
     }
 
+
+    public void SetOnItemClickListener(final OnItemClickListener mItemClickListener){
+        this.mItemClickListener = mItemClickListener;
+    }
+
+    public interface OnItemClickListener{
+        public void onItemClick(View view, int position);
+    }
+
     @Override
     public int getItemCount() {
         return eventdata.size();
@@ -56,6 +63,18 @@ public class HostAdapter extends RecyclerView.Adapter<HostAdapter.ViewHolder>  {
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.event_title);
+
+            itemView.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v){
+                    if (mItemClickListener != null){
+                        if (getAdapterPosition() != RecyclerView.NO_POSITION){
+                            mItemClickListener.onItemClick(v, getAdapterPosition());
+                        }
+                    }
+                }
+            });
 
         }
     }

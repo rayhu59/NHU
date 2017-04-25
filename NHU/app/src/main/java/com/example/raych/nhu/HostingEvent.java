@@ -15,7 +15,7 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class HostingEvent extends AppCompatActivity implements host_rv_fragment.OnFragmentInteractionListener{
+public class HostingEvent extends AppCompatActivity implements host_rv_fragment.OnFragmentInteractionListener, Event_Info_frag.OnFragmentInteractionListener{
 
 
     @Override
@@ -60,6 +60,10 @@ public class HostingEvent extends AppCompatActivity implements host_rv_fragment.
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.toolbar_home:
+                Intent zero = new Intent(this,Home.class);
+                startActivity(zero);
+                return true;
             case R.id.toolbar_create:
                 Intent one = new Intent(this,CreateEvent.class);
                 startActivity(one);
