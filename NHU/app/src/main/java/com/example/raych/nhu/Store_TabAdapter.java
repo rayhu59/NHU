@@ -37,7 +37,7 @@ Store_Top_Paid.OnFragmentInteractionListener,Store_Top_Free.OnFragmentInteractio
 
     @Override
     public int getCount() {
-        return 0;
+        return tab_count;
     }
 
     //Return title of tab.

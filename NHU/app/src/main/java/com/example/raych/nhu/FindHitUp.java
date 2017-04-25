@@ -1,6 +1,8 @@
 package com.example.raych.nhu;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +14,9 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class FindHitUp extends AppCompatActivity {
+public class FindHitUp extends AppCompatActivity implements Store_Top_Free.OnFragmentInteractionListener
+, Store_Top_Paid.OnFragmentInteractionListener, Store_Popular.OnFragmentInteractionListener{
+    int limit = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +24,10 @@ public class FindHitUp extends AppCompatActivity {
         setContentView(R.layout.activity_find_hit_up);
         Toolbar toolbar = (Toolbar) findViewById(R.id.store_toolbar);
         setSupportActionBar(toolbar);
-
-
-
+        ViewPager viewPager = (ViewPager)findViewById(R.id.Store_Viewpager);
+        Store_TabAdapter adapter= new Store_TabAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+       // viewPager.setOffscreenPageLimit(limit);
 
     }
 
@@ -70,5 +75,10 @@ public class FindHitUp extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

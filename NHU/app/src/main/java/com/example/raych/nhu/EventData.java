@@ -128,9 +128,6 @@ public class EventData {
             new GetCoordinates().execute(event.getLocation().toString().replace(" ","+"));
             //add this in post execution of Asnyc task
            // mRef.child(event.getName()).setValue(event);  //Adds event to eventdata database
-
-
-
         }
     }
 

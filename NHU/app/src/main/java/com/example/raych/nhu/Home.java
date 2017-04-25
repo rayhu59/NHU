@@ -632,8 +632,10 @@ public class Home extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
             for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                     Log.d("firebasedata2", snapshot.getKey());
-                     Log.d("FirebaseData",snapshot.getValue().toString());
+                HashMap e = (HashMap) snapshot.getValue();
+                //Log.d("firebasedata", e.get("name").toString());
+                Double lat = Double.valueOf(e.get("lat").toString());
+                Double lng = Double.valueOf(e.get("lng").toString());
                 }
             }
 
@@ -664,16 +666,7 @@ public class Home extends AppCompatActivity
                     currentLongitude);
         }
 
-        // Add a marker in current location and move the camera
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(currentLocation);
-        markerOptions.title("Current Location");
-        markerOptions.snippet("You Are Here");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mCurrentLocationMarker = mMap.addMarker(markerOptions);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(13));
 
     }
 
