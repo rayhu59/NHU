@@ -29,16 +29,21 @@
         </activity>
         <activity
             android:name=".Home"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_home"
              />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBBlOu3oP2nsuwIg6d7tCAfsmZKW29XQ78" />
 
-        <activity android:name=".CreateEvent" />
-        <activity android:name=".FindHitUp" />
-        <activity android:name=".HostingEvent" />
-        <activity android:name=".JoinedEvents" />
+        <activity android:name=".CreateEvent"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
+        <activity android:name=".FindHitUp"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
+        <activity android:name=".HostingEvent"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
+        <activity android:name=".JoinedEvents"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
     </application>
 
 </manifest>

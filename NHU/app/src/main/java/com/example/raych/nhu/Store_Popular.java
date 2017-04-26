@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 
 /**
@@ -82,6 +85,15 @@ public class Store_Popular extends android.support.v4.app.Fragment {
         DatabaseReference childRef = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
         storeAdapter = new StoreAdapter(Event.class, R.layout.joined_card, StoreAdapter.ViewHolder.class, childRef, getContext());
         popular_recycler_view.setAdapter(storeAdapter);
+        storeAdapter.SetOnItemClickListerner(new StoreAdapter.FireBaseListerner() {
+            @Override
+            public void cardClick(View view, int position) {
+                Event event = storeAdapter.getItem(position);
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction().replace(R.id.findhitup_frame, Event_Info_frag.newInstance(event))
+                        .addToBackStack(null).commit();
+            }
+        });
         return view;
     }
 

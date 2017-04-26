@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -14,27 +15,27 @@ import java.util.List;
  * Created by donnale on 4/25/17.
  */
 
-public class PaidFreeAdapter extends RecyclerView.Adapter<PaidFreeAdapter.ViewHolder>{
+public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.ViewHolder>{
 
     List eventdata;
     Context cont;
-    static PaidFreeAdapter.OnItemClickListener pfItemClickListener;
+    static OnItemClickListener fItemClickListener;
 
-    public PaidFreeAdapter(Context context,List data) {
+    public FreeAdapter(Context context,List data) {
         eventdata = data;
         cont = context;
     }
 
     @Override
-    public PaidFreeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FreeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item;
         item = LayoutInflater.from(parent.getContext()).inflate(R.layout.hosting_card, parent, false);
-        PaidFreeAdapter.ViewHolder itemholder = new PaidFreeAdapter.ViewHolder(item);
+        FreeAdapter.ViewHolder itemholder = new FreeAdapter.ViewHolder(item);
         return itemholder;
     }
 
     @Override
-    public void onBindViewHolder(PaidFreeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(FreeAdapter.ViewHolder holder, int position) {
         //String name = eventdata.get("name");
         //            HashMap<String, ?> movie = (HashMap) mItems.get(position);
         HashMap e = (HashMap) eventdata.get(position);
@@ -45,8 +46,10 @@ public class PaidFreeAdapter extends RecyclerView.Adapter<PaidFreeAdapter.ViewHo
     }
 
 
-    public void SetOnItemClickListener(final PaidFreeAdapter.OnItemClickListener pfItemClickListener){
-        this.pfItemClickListener = pfItemClickListener;
+    public void SetOnItemClickListener(final FreeAdapter.OnItemClickListener fItemClickListener){
+        this.fItemClickListener = fItemClickListener;
+
+
     }
 
     public interface OnItemClickListener{
@@ -69,9 +72,9 @@ public class PaidFreeAdapter extends RecyclerView.Adapter<PaidFreeAdapter.ViewHo
 
                 @Override
                 public void onClick(View v){
-                    if (pfItemClickListener != null){
+                    if (fItemClickListener != null){
                         if (getAdapterPosition() != RecyclerView.NO_POSITION){
-                            pfItemClickListener.onItemClick(v, getAdapterPosition());
+                            fItemClickListener.onItemClick(v, getAdapterPosition());
                         }
                     }
                 }

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,10 +103,10 @@ public class Store_Top_Free extends android.support.v4.app.Fragment {
                 top_free_recycler_view= (RecyclerView) view.findViewById(R.id.my_topfree_recycler_view);
                 layoutManager = new LinearLayoutManager(getActivity());
                 top_free_recycler_view.setLayoutManager(layoutManager);
-                final PaidFreeAdapter adapter = new PaidFreeAdapter(getActivity(), eventList);
+                final FreeAdapter adapter = new FreeAdapter(getActivity(), eventList);
                 top_free_recycler_view.setAdapter(adapter);
 
-                adapter.SetOnItemClickListener(new PaidFreeAdapter.OnItemClickListener() {
+                adapter.SetOnItemClickListener(new FreeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         HashMap e = (HashMap) eventList.get(position);

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -104,7 +105,7 @@ public class host_rv_fragment extends android.support.v4.app.Fragment implements
 
                     adapter.SetOnItemClickListener(new HostAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position) {
+                        public void onItemClick(final View view, int position) {
                             String eventname = data.get(position).toString();
                             final DatabaseReference event = mRef_Event.child(eventname);
 
@@ -121,9 +122,19 @@ public class host_rv_fragment extends android.support.v4.app.Fragment implements
                                     event2.setTime(e.get("time").toString());
                                     event2.setDescription(e.get("description").toString());
 
+                                    Event_Info_frag details = Event_Info_frag.newInstance(event2);
+
+                                    details.setSharedElementEnterTransition(new DetailsTransition());
+                                    details.setEnterTransition(new android.transition.Fade());
+                                    details.setExitTransition(new android.transition.Fade());
+                                    details.setSharedElementReturnTransition(new DetailsTransition());
+                                    //ImageView img = (ImageView)sharedImage.findViewById(R.id.pic);
+                                    TextView txt = (TextView)view.findViewById(R.id.event_title);
+
                                     FragmentManager fm = getActivity().getSupportFragmentManager();
                                     FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                                    fragmentTransaction.replace(R.id.host_rv_fragment_frame, Event_Info_frag.newInstance(event2));
+                                    fragmentTransaction.addSharedElement(txt,txt.getTransitionName());
+                                    fragmentTransaction.replace(R.id.host_rv_fragment_frame, details);
                                     fragmentTransaction.addToBackStack(null);
                                     fragmentTransaction.commit();
 
@@ -196,3 +207,4 @@ public class host_rv_fragment extends android.support.v4.app.Fragment implements
         void onFragmentInteraction(Uri uri);
     }
 }
+

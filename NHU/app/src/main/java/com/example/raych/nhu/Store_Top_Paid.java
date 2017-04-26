@@ -106,10 +106,10 @@ public class Store_Top_Paid extends android.support.v4.app.Fragment {
                 layoutManager = new LinearLayoutManager(getActivity());
                 paid_recycler_view.setLayoutManager(layoutManager);
 
-                final PaidFreeAdapter adapter = new PaidFreeAdapter(getActivity(), eventList);
+                final PaidAdapter adapter = new PaidAdapter(getActivity(), eventList);
                 paid_recycler_view.setAdapter(adapter);
 
-                adapter.SetOnItemClickListener(new PaidFreeAdapter.OnItemClickListener() {
+                adapter.SetOnItemClickListener(new PaidAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
 

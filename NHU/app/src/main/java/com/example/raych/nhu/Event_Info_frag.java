@@ -88,6 +88,8 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         }
 
         detail_name.setText(event.getName());
+        detail_name.setTransitionName(event.getName());
+
         detail_description.setText(event.getDescription());
         detail_cost.setText(event.getCost());
         detail_date.setText(event.getDate());

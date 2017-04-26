@@ -29,7 +29,7 @@ import java.util.Map;
 public class StoreAdapter extends FirebaseRecyclerAdapter<Event, StoreAdapter.ViewHolder> {
 
     static List<Map<String, ?>> mItems;
-    static OnItemClickListener mItemClickListener;
+    static FireBaseListerner fireBaseListerner;
     Context mcontext;
 
     public StoreAdapter(Class<Event> eventClass, int joined_card, Class<ViewHolder> viewHolderClass, DatabaseReference childRef, Context context) {
@@ -40,21 +40,19 @@ public class StoreAdapter extends FirebaseRecyclerAdapter<Event, StoreAdapter.Vi
     @Override
     protected void populateViewHolder(ViewHolder viewHolder, Event e, int position) {
         String name2 =  e.getName();
-        String description2 = e.getDescription();
-        String location2 =  e.getLocation();
-        String guestsNumber2 =  e.getGuests();
-        String time2 =  e.getTime();
-        String date2 =  e.getDate();
-        String cost2 =  e.getCost();
         String Youtube2 = e.getYoutubeLink();
         Log.v("CHECK", Youtube2);
         viewHolder.name.setText(name2);
-//        viewHolder.location.setText(location2);
-//        viewHolder.num_guests.setText(guestsNumber2);
-//        viewHolder.date.setText(date2);
 
 
+    }
 
+    public interface FireBaseListerner {
+        public void cardClick(View view, int position);
+    }
+
+    public void SetOnItemClickListerner(FireBaseListerner listerner2) {
+        this.fireBaseListerner = listerner2;
     }
 
 
@@ -70,20 +68,11 @@ public class StoreAdapter extends FirebaseRecyclerAdapter<Event, StoreAdapter.Vi
         public ViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.textView3);
-            //  location = (TextView) view.findViewById(R.id.hostcard_eventLocation);
-            //  num_guests = (TextView) view.findViewById(R.id.hostcard_num_guests);
-            //  date = (TextView) view.findViewById(R.id.hostcard_eventDate);
-            //  icon = (ImageView) view.findViewById(R.id.hostcard_event_icon);
-
-
             view.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
-                    if (mItemClickListener != null) {
-                        if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                            mItemClickListener.onItemClick(v, getAdapterPosition());
-                        }
+                    if (fireBaseListerner != null){
+                        fireBaseListerner.cardClick(v, getAdapterPosition());
                     }
                 }
             });
@@ -93,23 +82,6 @@ public class StoreAdapter extends FirebaseRecyclerAdapter<Event, StoreAdapter.Vi
 
 
     }
-
-    public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
-    }
-
-    public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
-    }
-
-        /*
-        @Override
-        public MyHostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.hosting_card, parent, false);
-            return new ViewHolder(v);
-        }
-        */
-
 
 
 }

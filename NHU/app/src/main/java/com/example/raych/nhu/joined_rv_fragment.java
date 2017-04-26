@@ -12,6 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.transition.Fade;
+import android.widget.TextView;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -92,7 +96,7 @@ public class joined_rv_fragment extends android.support.v4.app.Fragment implemen
 
                     adapter.SetOnItemClickListener(new HostAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position) {
+                        public void onItemClick(final View view, int position) {
                             String eventname = data.get(position).toString();
                             final DatabaseReference event = mRef_Event.child(eventname);
 
@@ -109,9 +113,17 @@ public class joined_rv_fragment extends android.support.v4.app.Fragment implemen
                                     event2.setTime(e.get("time").toString());
                                     event2.setDescription(e.get("description").toString());
 
+                                    Event_Info_frag details = Event_Info_frag.newInstance(event2);
+                                    details.setSharedElementEnterTransition(new DetailsTransition());
+                                    details.setEnterTransition(new android.transition.Fade());
+                                    details.setExitTransition(new android.transition.Fade());
+                                    details.setSharedElementReturnTransition(new DetailsTransition());
+                                    TextView txt = (TextView)view.findViewById(R.id.event_title);
+
                                     FragmentManager fm = getActivity().getSupportFragmentManager();
                                     FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                                    fragmentTransaction.replace(R.id.joined_rv_fragment_frame, Event_Info_frag.newInstance(event2));
+                                    fragmentTransaction.addSharedElement(txt,txt.getTransitionName());
+                                    fragmentTransaction.replace(R.id.joined_rv_fragment_frame, details);
                                     fragmentTransaction.addToBackStack(null);
                                     fragmentTransaction.commit();
 
