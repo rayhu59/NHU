@@ -1,10 +1,12 @@
 package com.example.raych.nhu;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -48,7 +50,7 @@ import java.util.Map;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback
-        , GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        , GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMarkerClickListener {
 
 
     DatabaseReference mRef;
@@ -68,7 +70,7 @@ public class Home extends AppCompatActivity
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
      * than this value.
      */
-    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
     // Keys for storing activity state in the Bundle.
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
@@ -163,29 +165,29 @@ public class Home extends AppCompatActivity
 
         switch (id) {
             case R.id.toolbar_home:
-                Intent zero = new Intent(this,Home.class);
+                Intent zero = new Intent(this, Home.class);
                 startActivity(zero);
                 return true;
             case R.id.toolbar_create:
-                Intent one = new Intent(this,CreateEvent.class);
+                Intent one = new Intent(this, CreateEvent.class);
                 startActivity(one);
                 return true;
             case R.id.toolbar_host:
-                Intent two = new Intent(this,HostingEvent.class);
+                Intent two = new Intent(this, HostingEvent.class);
                 startActivity(two);
                 return true;
             case R.id.toolbar_join:
-                Intent three = new Intent(this,JoinedEvents.class);
+                Intent three = new Intent(this, JoinedEvents.class);
                 startActivity(three);
                 return true;
             case R.id.toolbar_hitup:
-                Intent four = new Intent(this,FindHitUp.class);
+                Intent four = new Intent(this, FindHitUp.class);
                 startActivity(four);
                 return true;
             case R.id.toolbar_logout:
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 auth.signOut();
-                Intent logout = new Intent(this,login.class);
+                Intent logout = new Intent(this, login.class);
                 startActivity(logout);
                 return true;
         }
@@ -201,25 +203,25 @@ public class Home extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_create:
-                Intent one = new Intent(this,CreateEvent.class);
+                Intent one = new Intent(this, CreateEvent.class);
                 startActivity(one);
                 return true;
             case R.id.nav_host:
-                Intent two = new Intent(this,HostingEvent.class);
+                Intent two = new Intent(this, HostingEvent.class);
                 startActivity(two);
                 return true;
             case R.id.nav_join:
-                Intent three = new Intent(this,JoinedEvents.class);
+                Intent three = new Intent(this, JoinedEvents.class);
                 startActivity(three);
                 return true;
             case R.id.nav_hitup:
-                Intent four = new Intent(this,FindHitUp.class);
+                Intent four = new Intent(this, FindHitUp.class);
                 startActivity(four);
                 return true;
             case R.id.nav_logout:
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 auth.signOut();
-                Intent logout = new Intent(this,login.class);
+                Intent logout = new Intent(this, login.class);
                 startActivity(logout);
                 return true;
         }
@@ -358,97 +360,11 @@ public class Home extends AppCompatActivity
         mMap.moveCamera(CameraUpdateFactory.zoomTo(13));
 
 
-
         Log.e(TAG, "Maps Markers Updated");
     }
 
 
-    /*
-    public void addPlaces(double lat, double lng, String name, String id) {
-        // format this places location
 
-        LatLng event = new LatLng(lat,lng);
-
-        // add this places location marker
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(currentLocation);
-        markerOptions.title(name);
-        markerOptions.snippet(id);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        mMap.addMarker(markerOptions);
-
-
-
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-            // Use default InfoWindow frame
-            @Override
-            public View getInfoWindow(Marker selectMarker) {
-                return null;
-            }
-
-            // Defines the contents of the InfoWindow
-            @Override
-            public View getInfoContents(Marker selectMarker) {
-                Log.i(TAG, "Info Window triggered on " + selectMarker.getTitle()+  "\tID: " + selectMarker.getSnippet());
-                View v = getLayoutInflater().inflate(R.layout.event_window, null);
-
-                // get the position of the marker selected
-                LatLng latLng = selectMarker.getPosition();
-
-                // move camera to center on the selected marker
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
-
-                TextView pName = (TextView) v.findViewById(R.id.popup_name);
-                TextView pRating = (TextView) v.findViewById(R.id.popup_rating);
-                TextView pType = (TextView) v.findViewById(R.id.popup_type);
-                TextView pAddress = (TextView) v.findViewById(R.id.popup_address);
-                pAddress.setText(""+latLng.latitude + " long: " +latLng.longitude);
-
-
-                v.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-                pName.setText(clickedLandmark.getName());
-
-
-                GeocodeRequest geoRequest = new GeocodeRequest(clickedLandmark.getLatitude(), clickedLandmark.getLongitude());
-                geoRequest.execute();
-                /*
-                // Hold for time to update result
-                try {
-                    Log.i("Geocode API", "Waiting for process to catch up");
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                pAddress.setText(mGeoAddr);
-
-                return v;
-            }
-        });
-
-        mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
-            @Override
-            public void onInfoWindowLongClick(Marker marker) {
-                //stuff goes here
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.home_container,Event_Info_frag.newInstance("new","new"))
-                    .addToBackStack(null).commit();
-            }
-        });
-    }
-        */
-
-
-
-
-
-
-    /**
-     * Removes location updates from the FusedLocationApi.
-     */
     protected void stopLocationUpdates() {
         // It is a good practice to remove location requests when the activity is in a paused or
         // stopped state. Doing so helps battery performance and is especially
@@ -522,8 +438,7 @@ public class Home extends AppCompatActivity
                     mCurrentLocation = new Location("");
                     mCurrentLocation.setLatitude(43.0392);
                     mCurrentLocation.setLongitude(-76.3351);
-                }
-                else {
+                } else {
                     // Gets the last known location on the device
                     mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                     Log.e(TAG, LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient).toString());
@@ -539,12 +454,7 @@ public class Home extends AppCompatActivity
             }
         }
 
-        // If the user presses the Start Updates button before GoogleApiClient connects, we set
-        // mRequestingLocationUpdates to true (see startUpdatesButtonHandler()). Here, we check
-        // the value of mRequestingLocationUpdates and if it is true, we start location updates.
-//        if (mRequestingLocationUpdates) {
-//            startLocationUpdates();
-//        }
+
     }
 
     /**
@@ -558,15 +468,7 @@ public class Home extends AppCompatActivity
         updateUI();
         Log.e("OnLocationChanged Done", mCurrentLocation.toString());
 
-//        // initialize new OkHttpClient for rest calls when location changes
-//        client = new OkHttpClient();
-//
-//        // fire the call to the server
-//        PlacesRequest placesRequest = new PlacesRequest();
-//        placesRequest.execute();
 
-//        Toast.makeText(this, "Location Updated",
-//                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -626,16 +528,37 @@ public class Home extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+   //     if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+   //         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+      //      return;
+  //      }
+//        Double currLat = mCurrentLocation.getLatitude();
+ //       Double currLng = mCurrentLocation.getLongitude();
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mRef = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
+
+        Log.e(TAG, "Map is Ready");
+
+        final Location currentLocation = new Location("Current Location");
+      //  currentLocation.setLatitude(currLat);
+      //  currentLocation.setLongitude(currLng);
+
+
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                HashMap e = (HashMap) snapshot.getValue();
-                //Log.d("firebasedata", e.get("name").toString());
-                Double lat = Double.valueOf(e.get("lat").toString());
-                Double lng = Double.valueOf(e.get("lng").toString());
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    HashMap e = (HashMap) snapshot.getValue();
+                    Double lat = Double.valueOf(e.get("lat").toString());
+                    Double lng = Double.valueOf(e.get("lng").toString());
+                    String eventName = e.get("name").toString();
+                    Location point = new Location(eventName);
+                    point.setLatitude(lat);
+                    point.setLongitude(lng);
+               //     float DistanceInMeters = currentLocation.distanceTo(point);
+                //    Log.d("Distance", eventName + " : " + DistanceInMeters);
+                    LatLng loc = new LatLng(lat,lng);
+                    mMap.addMarker(new MarkerOptions().position(loc).title(eventName));
                 }
             }
 
@@ -646,28 +569,11 @@ public class Home extends AppCompatActivity
         });
 
 
-        Log.e(TAG, "Map is Ready");
-
-        double currentLatitude = 0.0;
-        double currentLongitude = 0.0;
-        LatLng currentLocation;
-
-        if (mCurrentLocation == null) {
-            currentLatitude = 40.4406;
-            currentLongitude = -79.9959;
-            currentLocation = new LatLng(
-                    currentLatitude,
-                    currentLongitude);
-        } else {
-            currentLatitude = mCurrentLocation.getLatitude();
-            currentLongitude = mCurrentLocation.getLongitude();
-            currentLocation = new LatLng(
-                    currentLatitude,
-                    currentLongitude);
-        }
-
-
-
+        mMap.setOnMarkerClickListener(this);
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
+    }
 }

@@ -4,9 +4,23 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -22,6 +36,12 @@ public class Store_Top_Free extends android.support.v4.app.Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
+    RecyclerView top_free_recycler_view;
+    RecyclerView.LayoutManager layoutManager;
+    DatabaseReference mRef_Event;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,7 +84,55 @@ public class Store_Top_Free extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_store__top__free, container, false);
+        final View view = inflater.inflate(R.layout.fragment_store__top__free, container, false);
+        mRef_Event = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
+        final List eventList = new ArrayList<Event>();
+
+        mRef_Event.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    HashMap e = (HashMap) snapshot.getValue();
+                    String cost = e.get("cost").toString();
+                    if (Double.valueOf(cost) == 0){
+                        eventList.add(e);
+                    }
+                }
+
+                top_free_recycler_view= (RecyclerView) view.findViewById(R.id.my_topfree_recycler_view);
+                layoutManager = new LinearLayoutManager(getActivity());
+                top_free_recycler_view.setLayoutManager(layoutManager);
+                final PaidFreeAdapter adapter = new PaidFreeAdapter(getActivity(), eventList);
+                top_free_recycler_view.setAdapter(adapter);
+
+                adapter.SetOnItemClickListener(new PaidFreeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        HashMap e = (HashMap) eventList.get(position);
+                        Event event2 = new Event();
+                        event2.setName(e.get("name").toString());
+                        event2.setLocation(e.get("location").toString());
+                        event2.setCost(e.get("cost").toString());
+                        event2.setDate(e.get("date").toString());
+                        event2.setTime(e.get("time").toString());
+                        event2.setDescription(e.get("description").toString());
+
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                        fragmentTransaction.replace(R.id.findhitup_frame, Event_Info_frag.newInstance(event2));
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -49,9 +49,11 @@ public class StoreAdapter extends FirebaseRecyclerAdapter<Event, StoreAdapter.Vi
         String Youtube2 = e.getYoutubeLink();
         Log.v("CHECK", Youtube2);
         viewHolder.name.setText(name2);
-        viewHolder.location.setText(location2);
-        viewHolder.num_guests.setText(guestsNumber2);
-        viewHolder.date.setText(date2);
+//        viewHolder.location.setText(location2);
+//        viewHolder.num_guests.setText(guestsNumber2);
+//        viewHolder.date.setText(date2);
+
+
 
     }
 
@@ -67,13 +69,11 @@ public class StoreAdapter extends FirebaseRecyclerAdapter<Event, StoreAdapter.Vi
 
         public ViewHolder(View view) {
             super(view);
-            //  name = (TextView) view.findViewById(R.id.hostcard_eventName);
+            name = (TextView) view.findViewById(R.id.textView3);
             //  location = (TextView) view.findViewById(R.id.hostcard_eventLocation);
             //  num_guests = (TextView) view.findViewById(R.id.hostcard_num_guests);
             //  date = (TextView) view.findViewById(R.id.hostcard_eventDate);
             //  icon = (ImageView) view.findViewById(R.id.hostcard_event_icon);
-
-
 
 
             view.setOnClickListener(new View.OnClickListener() {

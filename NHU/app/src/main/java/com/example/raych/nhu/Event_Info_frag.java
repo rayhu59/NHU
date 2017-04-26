@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,11 +75,11 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_event__info_frag, container, false);
-        detail_name = (TextView) view.findViewById(R.id.detail_name);
-        detail_location = (TextView) view.findViewById(R.id.detail_location);
-        detail_cost = (TextView) view.findViewById(R.id.detail_cost);
-        detail_time = (TextView) view.findViewById(R.id.detail_time);
-        detail_date = (TextView) view.findViewById(R.id.detail_date);
+        detail_name = (TextView) view.findViewById(R.id.detail_name2);
+        detail_location = (TextView) view.findViewById(R.id.detail_location2);
+        detail_cost = (TextView) view.findViewById(R.id.detail_cost2);
+        detail_time = (TextView) view.findViewById(R.id.detail_time2);
+        detail_date = (TextView) view.findViewById(R.id.detail_date2);
         detail_description = (TextView) view.findViewById(R.id.detail_description);
 
         if (getArguments()!=null){

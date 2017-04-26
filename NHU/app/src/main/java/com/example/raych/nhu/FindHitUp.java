@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class FindHitUp extends AppCompatActivity implements Store_Top_Free.OnFragmentInteractionListener
-, Store_Top_Paid.OnFragmentInteractionListener, Store_Popular.OnFragmentInteractionListener{
+, Store_Top_Paid.OnFragmentInteractionListener, Store_Popular.OnFragmentInteractionListener, Event_Info_frag.OnFragmentInteractionListener{
     int limit = 3;
 
     @Override

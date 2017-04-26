@@ -131,7 +131,7 @@ public class EventData {
         }
     }
 
-    //Source Code obtain from https://github.com/eddydn/GetCoordinatesGeocode
+    //Source Code for GetCoordinates obtain from https://github.com/eddydn/GetCoordinatesGeocode
     private class GetCoordinates extends AsyncTask<String,Void,String> {
 
         @Override

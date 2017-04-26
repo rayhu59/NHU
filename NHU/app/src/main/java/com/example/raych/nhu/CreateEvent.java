@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -54,21 +55,28 @@ public class CreateEvent extends AppCompatActivity {
         eventDescription = description_input.getText().toString().trim();
         eventYoutubeLink = youtubelink.getText().toString().trim();
 
-        Event newEvent = new Event();
-        newEvent.setName(eventName);
-        newEvent.setLocation(eventLocation);
-        newEvent.setDescription(eventDescription);
-        newEvent.setDate(eventDate);
-        newEvent.setTime(eventTime);
-        newEvent.setCost(eventCost);
-        newEvent.setGuests("0");
-        newEvent.setYoutubeLink(eventYoutubeLink);
+        if (eventName == null || eventName.isEmpty()){
+            Toast.makeText(getApplicationContext(),"Missing inputs", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Event newEvent = new Event();
+            newEvent.setName(eventName);
+            newEvent.setLocation(eventLocation);
+            newEvent.setDescription(eventDescription);
+            newEvent.setDate(eventDate);
+            newEvent.setTime(eventTime);
+            newEvent.setCost(eventCost);
+            newEvent.setGuests("0");
+            newEvent.setYoutubeLink(eventYoutubeLink);
 
-        eventData.addItemToServer(newEvent);
+            eventData.addItemToServer(newEvent);
 
-        Intent gohome = new Intent(this,Home.class);
-        startActivity(gohome);
+            Intent clear1 = new Intent(this,CreateEvent.class);
+            startActivity(clear1);
+            Toast.makeText(getApplicationContext(),"Event Created", Toast.LENGTH_LONG).show();
 
+        }
 
     }
 

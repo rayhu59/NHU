@@ -4,9 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 /**
@@ -22,6 +27,11 @@ public class Store_Popular extends android.support.v4.app.Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
+    RecyclerView popular_recycler_view;
+    RecyclerView.LayoutManager layoutManager;
+    StoreAdapter storeAdapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,7 +74,15 @@ public class Store_Popular extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_store__popular, container, false);
+        View view = inflater.inflate(R.layout.fragment_store__popular, container, false);
+
+        popular_recycler_view = (RecyclerView) view.findViewById(R.id.my_popular_recycler_view);
+        layoutManager = new LinearLayoutManager(getActivity());
+        popular_recycler_view.setLayoutManager(layoutManager);
+        DatabaseReference childRef = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
+        storeAdapter = new StoreAdapter(Event.class, R.layout.joined_card, StoreAdapter.ViewHolder.class, childRef, getContext());
+        popular_recycler_view.setAdapter(storeAdapter);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
