@@ -47,6 +47,7 @@ dependencies {
     compile 'com.google.firebase:firebase-database:10.2.1'
     compile 'jp.wasabeef:recyclerview-animators:2.2.5'
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'

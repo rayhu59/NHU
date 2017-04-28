@@ -33,7 +33,8 @@ public class CreateEvent extends AppCompatActivity {
     private final int REQ_CODE_SPEECH_INPUT = 100;
     EditText name_input,location_input,time_input,date_input,cost_input,description_input,youtubelink;
 
-
+    //voice to speech source code taken from
+    //http://www.androidhive.info/2014/07/android-speech-to-text-tutorial/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

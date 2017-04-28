@@ -121,6 +121,7 @@ public class host_rv_fragment extends android.support.v4.app.Fragment implements
                                     event2.setDate(e.get("date").toString());
                                     event2.setTime(e.get("time").toString());
                                     event2.setDescription(e.get("description").toString());
+                                    event2.setYoutubeLink(e.get("youtubeLink").toString());
 
                                     Event_Info_frag details = Event_Info_frag.newInstance(event2);
 

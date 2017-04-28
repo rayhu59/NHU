@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -34,6 +37,7 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
     TextView detail_date;
     TextView detail_time;
     TextView detail_description;
+    ImageButton Youtube;
 
     // TODO: Rename and change types of parameters
 //    private String mParam1;
@@ -82,6 +86,9 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         detail_time = (TextView) view.findViewById(R.id.detail_time2);
         detail_date = (TextView) view.findViewById(R.id.detail_date2);
         detail_description = (TextView) view.findViewById(R.id.detail_description);
+        Youtube = (ImageButton)view.findViewById(R.id.youtube_button);
+
+
 
         Bundle bundle = getArguments();
         event = (Event) bundle.getSerializable("event");
@@ -94,6 +101,24 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         detail_date.setText(event.getDate());
         detail_time.setText(event.getTime());
         detail_location.setText(event.getLocation());
+        final String url_link_youtube = event.getYoutubeLink();
+        final String youtube = "youtube";
+        final String youtube2 = "youtu.be";
+        Log.d("url2", url_link_youtube);
+
+        Youtube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("url", url_link_youtube);
+                if ( url_link_youtube.contains(youtube) || url_link_youtube.contains(youtube2)){
+                    Intent playvideo = new Intent(getActivity(), YoutubeTest.class);
+                    playvideo.putExtra("Link",url_link_youtube);
+                    startActivity(playvideo);
+                }else {
+                    Toast.makeText(getActivity(),"No Youtube Link", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         Button join_event = (Button)view.findViewById(R.id.join_event_button);
         join_event.setOnClickListener(new View.OnClickListener() {

@@ -49,10 +49,13 @@
         <activity
             android:name=".JoinedEvents"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".ConfirmationActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
-        <activity android:name=".Checkout"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+        <activity
+            android:name=".ConfirmationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".Checkout"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity android:name=".YoutubeTest"></activity>
     </application>
 
 </manifest>
