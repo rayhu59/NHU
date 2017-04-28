@@ -90,6 +90,51 @@ public class EventData {
         }
     }
 
+    public void AddItemToJoin (final String name) {
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                String email = user.getEmail();
+                String parse = (email.split("@"))[0];
+                parse = parse.replaceAll("[^A-Za-z0-9]", "");
+
+                DatabaseReference host = mRef_User.child(parse);
+                final String finalParse = parse;
+                host.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, User> user = (Map<String, User>) dataSnapshot.getValue();
+                        List CurrentList = new ArrayList<String>();
+                        CurrentList = (List) user.get("hosting");
+                        List CurrentJoin = (List) user.get("joined");
+
+                        User user2 = new User(finalParse);
+                        user2.newJoinList(CurrentJoin);
+                        user2.newHostList(CurrentList);
+
+                        if ( CurrentJoin.contains(name)){
+
+                        } else {
+                            user2.AddtoJoined(name);
+                        }
+
+                        UserData userData = new UserData();
+                        userData.addUserToServer(user2);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+
+
+    }
+
+
     public void addItemToServer(final Event event){
         if(event!=null){
             currentEvent = event;
@@ -112,7 +157,13 @@ public class EventData {
                         User user2 = new User(finalParse);
                         user2.newJoinList(CurrentJoin);
                         user2.newHostList(CurrentList);
-                        user2.AddtoHosting(event.getName());
+
+                        if ( CurrentList.contains(event.getName())){
+
+                        }else {
+                            user2.AddtoHosting(event.getName());
+                        }
+
                         UserData userData=  new UserData();
                         userData.addUserToServer(user2);
                     }

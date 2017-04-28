@@ -1,12 +1,14 @@
 package com.example.raych.nhu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -24,7 +26,7 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
 //    private static final String ARG_PARAM1 = "param1";
 //    private static final String ARG_PARAM2 = "param2";
 
-    static Event event = new Event();
+     Event event = new Event();
 
     TextView detail_name;
     TextView detail_location;
@@ -56,7 +58,6 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         Event_Info_frag fragment = new Event_Info_frag();
         Bundle args = new Bundle();
         args.putSerializable("event",e);
-        event = e;
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,10 +83,8 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         detail_date = (TextView) view.findViewById(R.id.detail_date2);
         detail_description = (TextView) view.findViewById(R.id.detail_description);
 
-        if (getArguments()!=null){
-
-            event = (Event) getArguments().getSerializable("event");
-        }
+        Bundle bundle = getArguments();
+        event = (Event) bundle.getSerializable("event");
 
         detail_name.setText(event.getName());
         detail_name.setTransitionName(event.getName());
@@ -96,6 +95,15 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         detail_time.setText(event.getTime());
         detail_location.setText(event.getLocation());
 
+        Button join_event = (Button)view.findViewById(R.id.join_event_button);
+        join_event.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent checkout_out = new Intent(getActivity(), Checkout.class);
+                checkout_out.putExtra("Event",event);
+                startActivity(checkout_out);
+            }
+        });
         return view;
 
 

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.ToxicBakery.viewpager.transforms.ZoomOutSlideTransformer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -27,6 +28,7 @@ public class FindHitUp extends AppCompatActivity implements Store_Top_Free.OnFra
         ViewPager viewPager = (ViewPager)findViewById(R.id.Store_Viewpager);
         Store_TabAdapter adapter= new Store_TabAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+        viewPager.setPageTransformer(true, new ZoomOutSlideTransformer());
        // viewPager.setOffscreenPageLimit(limit);
 
     }

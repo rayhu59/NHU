@@ -8,8 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.example.raych.nhu.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-feature android:name="android.hardware.location.gps" />
 
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".login"
+        <activity
+            android:name=".login"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -30,20 +31,26 @@
         <activity
             android:name=".Home"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/title_activity_home"
-             />
+            android:label="@string/title_activity_home" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBBlOu3oP2nsuwIg6d7tCAfsmZKW29XQ78" />
 
-        <activity android:name=".CreateEvent"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
-        <activity android:name=".FindHitUp"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
-        <activity android:name=".HostingEvent"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
-        <activity android:name=".JoinedEvents"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
+        <activity
+            android:name=".CreateEvent"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".FindHitUp"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".HostingEvent"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".JoinedEvents"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity android:name=".ConfirmationActivity" />
+        <activity android:name=".Checkout"></activity>
     </application>
 
 </manifest>
