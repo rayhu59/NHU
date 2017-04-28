@@ -83,7 +83,7 @@ public class Store_Popular extends android.support.v4.app.Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         popular_recycler_view.setLayoutManager(layoutManager);
         DatabaseReference childRef = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
-        storeAdapter = new StoreAdapter(Event.class, R.layout.joined_card, StoreAdapter.ViewHolder.class, childRef, getContext());
+        storeAdapter = new StoreAdapter(Event.class, R.layout.tab_card, StoreAdapter.ViewHolder.class, childRef, getContext());
         popular_recycler_view.setAdapter(storeAdapter);
         storeAdapter.SetOnItemClickListerner(new StoreAdapter.FireBaseListerner() {
             @Override

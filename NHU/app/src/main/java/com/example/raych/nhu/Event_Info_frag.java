@@ -166,7 +166,7 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         super.onDetach();
         mListener = null;
     }
-
+    //http://programmerguru.com/android-tutorial/android-broadcast-receiver-example/
     private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
         @Override
         //When Event is published, onReceive method is called

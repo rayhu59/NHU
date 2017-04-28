@@ -39,12 +39,12 @@ public class StoreAdapter extends FirebaseRecyclerAdapter<Event, StoreAdapter.Vi
 
     @Override
     protected void populateViewHolder(ViewHolder viewHolder, Event e, int position) {
-        String name2 =  e.getName();
         String Youtube2 = e.getYoutubeLink();
         Log.v("CHECK", Youtube2);
-        viewHolder.name.setText(name2);
-
-
+        viewHolder.tabtitle.setText(e.getName());
+        viewHolder.tabcost.setText(e.getCost());
+        viewHolder.tablocation.setText(e.getLocation());
+        viewHolder.tabdate.setText(e.getDate());
     }
 
     public interface FireBaseListerner {
@@ -57,17 +57,18 @@ public class StoreAdapter extends FirebaseRecyclerAdapter<Event, StoreAdapter.Vi
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder  {
-        public  TextView name;
-        public TextView location;
-        public TextView num_guests;
-        public TextView date;
-        public ImageView icon;
-
-
+        public TextView tabtitle;
+        public TextView tablocation;
+        public TextView tabdate;
+        public TextView tabcost;
 
         public ViewHolder(View view) {
             super(view);
-            name = (TextView) view.findViewById(R.id.textView3);
+            tabtitle = (TextView) itemView.findViewById(R.id.tabcard_eventName);
+            tablocation = (TextView) itemView.findViewById(R.id.tabcard_eventLocation);
+            tabdate = (TextView) itemView.findViewById(R.id.tabcard_date);
+            tabcost = (TextView) itemView.findViewById(R.id.tabcard_cost);
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

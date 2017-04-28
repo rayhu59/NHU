@@ -57,9 +57,7 @@ public class CreateEvent extends AppCompatActivity {
                 promptSpeechInput();
             }
         });
-
         Button createEvent = (Button)findViewById(R.id.make_event_button);
-
     }
 
     private void promptSpeechInput() {
@@ -77,8 +75,6 @@ public class CreateEvent extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
-
-
     /**
      * Receiving speech input
      * */
@@ -96,7 +92,6 @@ public class CreateEvent extends AppCompatActivity {
                 }
                 break;
             }
-
         }
     }
 

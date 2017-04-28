@@ -29,7 +29,8 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.ViewHolder>{
     @Override
     public FreeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item;
-        item = LayoutInflater.from(parent.getContext()).inflate(R.layout.hosting_card, parent, false);
+//        item = LayoutInflater.from(parent.getContext()).inflate(R.layout.hosting_card, parent, false);
+        item = LayoutInflater.from(parent.getContext()).inflate(R.layout.tab_card, parent, false);
         FreeAdapter.ViewHolder itemholder = new FreeAdapter.ViewHolder(item);
         return itemholder;
     }
@@ -39,17 +40,18 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.ViewHolder>{
         //String name = eventdata.get("name");
         //            HashMap<String, ?> movie = (HashMap) mItems.get(position);
         HashMap e = (HashMap) eventdata.get(position);
-        String name = e.get("name").toString();
+        //String name = e.get("name").toString();
 
-        holder.title.setText(name);
+        holder.tabtitle.setText(e.get("name").toString());
+        holder.tabcost.setText(e.get("cost").toString());
+        holder.tabdate.setText(e.get("date").toString());
+        holder.tablocation.setText(e.get("location").toString());
 
     }
 
 
     public void SetOnItemClickListener(final FreeAdapter.OnItemClickListener fItemClickListener){
         this.fItemClickListener = fItemClickListener;
-
-
     }
 
     public interface OnItemClickListener{
@@ -62,11 +64,18 @@ public class FreeAdapter extends RecyclerView.Adapter<FreeAdapter.ViewHolder>{
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView title;
+        public TextView tabtitle;
+        public TextView tablocation;
+        public TextView tabdate;
+        public TextView tabcost;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.event_title);
+//            tabtitle = (TextView) itemView.findViewById(R.id.event_title);
+            tabtitle = (TextView) itemView.findViewById(R.id.tabcard_eventName);
+            tablocation = (TextView) itemView.findViewById(R.id.tabcard_eventLocation);
+            tabdate = (TextView) itemView.findViewById(R.id.tabcard_date);
+            tabcost = (TextView) itemView.findViewById(R.id.tabcard_cost);
 
             itemView.setOnClickListener(new View.OnClickListener(){
 

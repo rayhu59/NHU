@@ -9,5 +9,9 @@
     <color name="blue">#b3ecff</color>
     <color name="green">#ccffcc</color>
     <color name="gold">#ffcc00</color>
-    <color name="greyWhite">#58e1ca</color>
+    <color name="palegold">#80ffcc00</color>
+    <color name="mainColor">#58e1ca</color>
+    <color name="secondColor">#88efdc</color>
+    <color name="white">#fafafa</color>
+
 </resources>
