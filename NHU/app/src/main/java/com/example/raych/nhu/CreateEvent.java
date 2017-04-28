@@ -1,6 +1,8 @@
 package com.example.raych.nhu;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,9 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class CreateEvent extends AppCompatActivity {
     String eventName;
@@ -23,29 +29,82 @@ public class CreateEvent extends AppCompatActivity {
     String eventDescription;
     String eventYoutubeLink;
     EventData eventData = new EventData();
+    private ImageButton mic;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+    EditText name_input,location_input,time_input,date_input,cost_input,description_input,youtubelink;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+        name_input = (EditText) findViewById(R.id.e_title);
+         location_input = (EditText) findViewById(R.id.e_location);
+         time_input = (EditText) findViewById(R.id.e_time);
+         date_input = (EditText) findViewById(R.id.e_date);
+         cost_input = (EditText) findViewById(R.id.e_cost);
+         description_input = (EditText) findViewById(R.id.e_description);
+         youtubelink = (EditText)findViewById(R.id.youtube_link);
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         tb.setTitle("Create Event");
         setSupportActionBar(tb);
+        mic = (ImageButton)findViewById(R.id.imageView2) ;
+        mic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promptSpeechInput();
+            }
+        });
 
         Button createEvent = (Button)findViewById(R.id.make_event_button);
 
     }
 
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    /**
+     * Receiving speech input
+     * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    name_input.setText(result.get(0));
+                }
+                break;
+            }
+
+        }
+    }
+
+
+
+
     //This method is called through layout - onclick
     public void getNewEventInfo(View v){
-        EditText name_input = (EditText) findViewById(R.id.e_title);
-        EditText location_input = (EditText) findViewById(R.id.e_location);
-        EditText time_input = (EditText) findViewById(R.id.e_time);
-        EditText date_input = (EditText) findViewById(R.id.e_date);
-        EditText cost_input = (EditText) findViewById(R.id.e_cost);
-        EditText description_input = (EditText) findViewById(R.id.e_description);
-        EditText youtubelink = (EditText)findViewById(R.id.youtube_link);
+
 
         eventName =  name_input.getText().toString().trim();
         eventLocation  = location_input.getText().toString().trim();

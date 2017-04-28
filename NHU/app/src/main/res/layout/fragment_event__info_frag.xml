@@ -23,29 +23,6 @@
         android:textStyle="normal|bold" />
 
 
-    <Button
-        android:text="INVITE FRIENDS"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/contact_friends_button2"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="35dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:textStyle="normal|bold" />
-
-
-    <Button
-        android:text="JOIN EVENT"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/join_event_button"
-        android:layout_alignBaseline="@+id/contact_friends_button2"
-        android:layout_alignBottom="@+id/contact_friends_button2"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="26dp"
-        android:textStyle="normal|bold" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="500dp"
@@ -54,68 +31,89 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="480dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/contact_friends_button2"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="$100.00"
-                android:textSize="15dp"
-                android:id="@+id/detail_cost2"
-                android:layout_marginTop="27dp"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="35dp"
+                android:layout_marginEnd="25dp"
+                android:text="INVITE FRIENDS"
+                android:textStyle="normal|bold" />
 
-
-            <TextView
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/join_event_button"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="8:00 PM"
-                android:textSize="15dp"
-                android:id="@+id/detail_time2"
-                android:layout_marginTop="13dp"
-                android:layout_below="@+id/detail_date2"
+                android:layout_marginStart="17dp"
+                android:text="JOIN EVENT"
+                android:textStyle="normal|bold"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true" />
 
             <TextView
+                android:id="@+id/detail_cost2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="07/18/2017"
-                android:textSize="15dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="27dp"
+                android:text="$100.00"
+                android:textSize="15dp" />
+
+
+            <TextView
+                android:id="@+id/detail_time2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/detail_date2"
+                android:layout_marginTop="13dp"
+                android:text="8:00 PM"
+                android:textSize="15dp" />
+
+            <TextView
                 android:id="@+id/detail_date2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/detail_cost2"
                 android:layout_alignBottom="@+id/detail_cost2"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:text="07/18/2017"
+                android:textSize="15dp" />
 
             <TextView
+                android:id="@+id/detail_location2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1000 Irving Ave, Syracuse, New York 13210"
-                android:id="@+id/detail_location2"
-                android:textSize="15dp"
-                android:layout_marginTop="17dp"
+                android:layout_alignParentStart="true"
                 android:layout_below="@+id/detail_time2"
-                android:layout_alignParentStart="true" />
+                android:layout_marginTop="17dp"
+                android:text="1000 Irving Ave, Syracuse, New York 13210"
+                android:textSize="15dp" />
 
             <TextView
+                android:id="@+id/word_description2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DESCRIPTION:"
-                android:id="@+id/word_description2"
-                android:textSize="15dp"
-                android:layout_below="@+id/detail_location2"
                 android:layout_alignParentStart="true"
+                android:layout_below="@+id/detail_location2"
                 android:layout_marginTop="40dp"
+                android:text="DESCRIPTION:"
+                android:textSize="15dp"
                 android:textStyle="normal|bold" />
 
             <TextView
+                android:id="@+id/detail_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION"
-                android:id="@+id/detail_description"
-                android:layout_below="@+id/word_description2"
-                android:textSize="15dp"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="20dp" />
+                android:layout_below="@+id/word_description2"
+                android:layout_marginTop="20dp"
+                android:text="DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION"
+                android:textSize="15dp" />
 
         </RelativeLayout>
 
