@@ -55,7 +55,8 @@
         <activity
             android:name=".Checkout"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".YoutubeTest"></activity>
+        <activity android:name=".YoutubeTest"
+            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
     </application>
 
 </manifest>

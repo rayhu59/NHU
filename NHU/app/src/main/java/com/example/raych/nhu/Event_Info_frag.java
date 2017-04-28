@@ -1,7 +1,9 @@
 package com.example.raych.nhu;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -38,6 +40,7 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
     TextView detail_time;
     TextView detail_description;
     ImageButton Youtube;
+    int level;
 
     // TODO: Rename and change types of parameters
 //    private String mParam1;
@@ -88,7 +91,8 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         detail_description = (TextView) view.findViewById(R.id.detail_description);
         Youtube = (ImageButton)view.findViewById(R.id.youtube_button);
 
-
+        getActivity().registerReceiver(mBatInfoReceiver, new IntentFilter(
+                Intent.ACTION_BATTERY_CHANGED));
 
         Bundle bundle = getArguments();
         event = (Event) bundle.getSerializable("event");
@@ -110,10 +114,15 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("url", url_link_youtube);
-                if ( url_link_youtube.contains(youtube) || url_link_youtube.contains(youtube2)){
-                    Intent playvideo = new Intent(getActivity(), YoutubeTest.class);
-                    playvideo.putExtra("Link",url_link_youtube);
-                    startActivity(playvideo);
+                if ( url_link_youtube.contains(youtube) || url_link_youtube.contains(youtube2)) {
+
+                    if ( level < 15){
+                        Toast.makeText(getActivity(),"Battery Level too low",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Intent playvideo = new Intent(getActivity(), YoutubeTest.class);
+                        playvideo.putExtra("Link",url_link_youtube);
+                        startActivity(playvideo);
+                    }
                 }else {
                     Toast.makeText(getActivity(),"No Youtube Link", Toast.LENGTH_SHORT).show();
                 }
@@ -157,6 +166,18 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
+        @Override
+        //When Event is published, onReceive method is called
+        public void onReceive(Context c, Intent i) {
+            //Get Battery %
+             level = i.getIntExtra("level", 0);
+
+        }
+
+    };
+
 
     /**
      * This interface must be implemented by activities that contain this

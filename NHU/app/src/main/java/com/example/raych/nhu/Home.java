@@ -1,6 +1,9 @@
 package com.example.raych.nhu;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
@@ -114,13 +117,21 @@ public class Home extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view,"Lat: "+ mCurrentLocation.getLatitude() + " Long: "+ mCurrentLocation.getLongitude(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                double currentLatitude = (double) mCurrentLocation.getLatitude();
+                double currentLongitude = (double) mCurrentLocation.getLongitude();
+                LatLng currentLocation = new LatLng(
+                        currentLatitude,
+                        currentLongitude);
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(13));
+
             }
         });
 
@@ -533,20 +544,14 @@ public class Home extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-   //     if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-   //         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-      //      return;
-  //      }
-//        Double currLat = mCurrentLocation.getLatitude();
- //       Double currLng = mCurrentLocation.getLongitude();
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
         mRef = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
 
         Log.e(TAG, "Map is Ready");
 
         final Location currentLocation = new Location("Current Location");
-      //  currentLocation.setLatitude(currLat);
-      //  currentLocation.setLongitude(currLng);
+
 
 
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -576,6 +581,10 @@ public class Home extends AppCompatActivity
 
         mMap.setOnMarkerClickListener(this);
     }
+
+
+
+
 
     @Override
     public boolean onMarkerClick(Marker marker) {

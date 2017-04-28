@@ -1,5 +1,8 @@
 package com.example.raych.nhu;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,4 +71,6 @@ public class YoutubeTest extends YouTubeBaseActivity implements YouTubePlayer.On
     protected Provider getYouTubePlayerProvider() {
         return youTubeView;
     }
+
+
 }
