@@ -91,8 +91,7 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         detail_description = (TextView) view.findViewById(R.id.detail_description);
         Youtube = (ImageButton)view.findViewById(R.id.youtube_button);
 
-        getActivity().registerReceiver(mBatInfoReceiver, new IntentFilter(
-                Intent.ACTION_BATTERY_CHANGED));
+
 
         Bundle bundle = getArguments();
         event = (Event) bundle.getSerializable("event");
@@ -110,6 +109,8 @@ public class Event_Info_frag extends android.support.v4.app.Fragment {
         final String youtube2 = "youtu.be";
         Log.d("url2", url_link_youtube);
 
+        getActivity().registerReceiver(mBatInfoReceiver, new IntentFilter(
+                Intent.ACTION_BATTERY_CHANGED));
         Youtube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

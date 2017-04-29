@@ -173,9 +173,6 @@ public class Home extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         switch (id) {
@@ -330,11 +327,6 @@ public class Home extends AppCompatActivity
      * Requests location updates from the FusedLocationApi.
      */
     protected void startLocationUpdates() {
-        // The final argument to {@code requestLocationUpdates()} is a LocationListener
-        // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
-//        Log.e("mGoogleApiClient", mGoogleApiClient.toString());
-//        Log.e("mLocationRequest", mLocationRequest.toString());
-//        Log.e("this", this.toString());
         try {
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
@@ -438,27 +430,14 @@ public class Home extends AppCompatActivity
         // need to request initial locations
         startLocationUpdates();
 
-        // If the initial location was never previously requested, we use
-        // FusedLocationApi.getLastLocation() to get it. If it was previously requested, we store
-        // its value in the Bundle and check for it in onCreate(). We
-        // do not request it again unless the user specifically requests location updates by pressing
-        // the Start Updates button.
-        //
-        // Because we cache the value of the initial location in the Bundle, it means that if the
-        // user launches the activity,
-        // moves to a new location, and then changes the device orientation, the original location
-        // is displayed as the activity is re-created.
         if (mCurrentLocation == null) {
             try {
 
                 if (LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) == null) {
-                    // will likely fail to this the first time the emulator starts because there is no location in the emulator
-                    // thus we give it a default location (Syracuse University)
                     mCurrentLocation = new Location("");
                     mCurrentLocation.setLatitude(43.0392);
                     mCurrentLocation.setLongitude(-76.3351);
                 } else {
-                    // Gets the last known location on the device
                     mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                     Log.e(TAG, LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient).toString());
                 }
@@ -548,15 +527,8 @@ public class Home extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
         mRef = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
-
-        Log.e(TAG, "Map is Ready");
-
         final Location currentLocation = new Location("Current Location");
-
-
-
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -627,7 +599,7 @@ public class Home extends AppCompatActivity
                         event2.setDescription(e.get("description").toString());
                         event2.setYoutubeLink(e.get("youtubeLink").toString());
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.home_container, Event_Info_frag.newInstance(event2))
+                                .add(R.id.home_container, Event_Info_frag.newInstance(event2))
                                 .addToBackStack(null).commit();
                     }
 

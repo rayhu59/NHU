@@ -13,5 +13,6 @@
     <color name="mainColor">#58e1ca</color>
     <color name="secondColor">#88efdc</color>
     <color name="white">#fafafa</color>
+    <color name="rain">#6a27de</color>
 
 </resources>

@@ -5,6 +5,7 @@
     android:id="@+id/activity_create_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gold"
     tools:context="com.example.raych.nhu.CreateEvent">
 
 
@@ -142,6 +143,7 @@
         android:layout_height="50dp"
         android:id="@+id/make_event_button"
         android:onClick="getNewEventInfo"
+        android:background="@color/blue"
         tools:layout_conversion_absoluteX="92dp"
         tools:layout_conversion_absoluteY="489dp"
         tools:layout_conversion_absoluteWidth="200dp"
