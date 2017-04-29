@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,7 +56,8 @@ import java.util.Map;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback
-        , GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMarkerClickListener {
+        , GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMarkerClickListener
+,Event_Info_frag.OnFragmentInteractionListener{
 
 
     DatabaseReference mRef;
@@ -86,7 +89,7 @@ public class Home extends AppCompatActivity
      * Stores parameters for requests to the FusedLocationProviderApi.
      */
     protected LocationRequest mLocationRequest;
-
+    DatabaseReference mRef_Event;
     /**
      * Represents a geographical location.
      */
@@ -567,8 +570,11 @@ public class Home extends AppCompatActivity
                     point.setLongitude(lng);
                //     float DistanceInMeters = currentLocation.distanceTo(point);
                 //    Log.d("Distance", eventName + " : " + DistanceInMeters);
+                    String Location = e.get("location").toString();
                     LatLng loc = new LatLng(lat,lng);
-                    mMap.addMarker(new MarkerOptions().position(loc).title(eventName));
+                    mMap.addMarker(new MarkerOptions().position(loc).title(eventName)
+                    .snippet(Location)
+                    );
                 }
             }
 
@@ -580,6 +586,63 @@ public class Home extends AppCompatActivity
 
 
         mMap.setOnMarkerClickListener(this);
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                View info = getLayoutInflater().inflate(R.layout.event_info_window , null);
+                LatLng current = marker.getPosition();
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+                TextView event_name = (TextView)info.findViewById(R.id.info_name);
+                TextView event_loc = (TextView)info.findViewById(R.id.info_address);
+                String name = marker.getTitle();
+                String loc = marker.getSnippet();
+                event_name.setText(name);
+                event_loc.setText(loc);
+                return info;
+            }
+        });
+
+        mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+            @Override
+            public void onInfoWindowLongClick(Marker marker) {
+                mRef_Event = FirebaseDatabase.getInstance().getReference().child("eventdata").getRef();
+                final DatabaseReference event = mRef_Event.child(marker.getTitle());
+                event.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        HashMap e = (HashMap) dataSnapshot.getValue();
+
+                        Event event2 = new Event();
+                        event2.setName(e.get("name").toString());
+                        event2.setLocation(e.get("location").toString());
+                        event2.setCost(e.get("cost").toString());
+                        event2.setDate(e.get("date").toString());
+                        event2.setTime(e.get("time").toString());
+                        event2.setDescription(e.get("description").toString());
+                        event2.setYoutubeLink(e.get("youtubeLink").toString());
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.home_container, Event_Info_frag.newInstance(event2))
+                                .addToBackStack(null).commit();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+
+            }
+        });
     }
 
 
@@ -604,4 +667,8 @@ public class Home extends AppCompatActivity
     }
 
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
