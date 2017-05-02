@@ -5,7 +5,7 @@
     android:id="@+id/activity_create_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gold"
+    android:background="@color/light"
     tools:context="com.example.raych.nhu.CreateEvent">
 
 
@@ -168,7 +168,7 @@
         android:layout_marginRight="75dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitCenter"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/light"
         app:layout_constraintBottom_toTopOf="@+id/e_description"
         app:layout_constraintHorizontal_bias="0.853"
         app:layout_constraintLeft_toRightOf="@+id/youtube_link"

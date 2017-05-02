@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="110dp">
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -23,8 +22,10 @@
                 android:text="Host_event_text"
                 android:textSize="30dp"
                 android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif" />
         </RelativeLayout>
+
     </android.support.v7.widget.CardView>
 
 

@@ -2,6 +2,7 @@ package com.example.raych.nhu;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Color;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,6 +59,7 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
         Button createEvent = (Button)findViewById(R.id.make_event_button);
+        tb.setTitleTextColor(Color.WHITE);
     }
 
     private void promptSpeechInput() {

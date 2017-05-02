@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/pink"
     tools:context="com.example.raych.nhu.Checkout">
 
     <TextView
@@ -13,12 +14,15 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
         android:text="Check-Out" />
 
     <TextView
         android:id="@+id/checkout_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:textSize="15dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="48dp"

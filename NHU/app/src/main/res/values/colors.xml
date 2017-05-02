@@ -8,11 +8,12 @@
     <color name="pink">#ffccff</color>
     <color name="blue">#b3ecff</color>
     <color name="green">#ccffcc</color>
-    <color name="gold">#ffcc00</color>
+    <color name="gold">#40bca7</color>
     <color name="palegold">#80ffcc00</color>
     <color name="mainColor">#58e1ca</color>
-    <color name="secondColor">#88efdc</color>
+    <color name="secondColor">#40bca7</color>
     <color name="white">#fafafa</color>
     <color name="rain">#6a27de</color>
+    <color name="light">#fff788</color>
 
 </resources>

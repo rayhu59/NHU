@@ -30,6 +30,8 @@
             <android.support.v4.view.PagerTabStrip
                 android:layout_width="match_parent"
                 android:background="@color/gold"
+                style="@style/viewPagerTitleStrip"
+
                 android:id="@+id/TabTitleStrip"
                 android:layout_marginBottom="0dp"
                 android:layout_height="50dp"

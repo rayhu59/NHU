@@ -1,6 +1,7 @@
 package com.example.raych.nhu;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +29,7 @@ public class HostingEvent extends AppCompatActivity implements host_rv_fragment.
         //setSupportActionBar(rvToolbar);
         tb.setTitle("Events I Host");
         setSupportActionBar(tb);
+        tb.setTitleTextColor(Color.WHITE);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.host_rv_fragment_frame,host_rv_fragment.newInstance("new"))

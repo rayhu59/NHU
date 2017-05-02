@@ -1,6 +1,7 @@
 package com.example.raych.nhu;;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,7 +24,7 @@ public class JoinedEvents extends AppCompatActivity implements joined_rv_fragmen
         //setSupportActionBar(rvToolbar);
         tb.setTitle("Events I Joined");
         setSupportActionBar(tb);
-
+        tb.setTitleTextColor(Color.WHITE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.joined_rv_fragment_frame, joined_rv_fragment.newInstance("new"))
                 .addToBackStack(null).commit();

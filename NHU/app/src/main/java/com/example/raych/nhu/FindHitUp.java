@@ -1,6 +1,7 @@
 package com.example.raych.nhu;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class FindHitUp extends AppCompatActivity implements Store_Top_Free.OnFra
         setContentView(R.layout.activity_find_hit_up);
         Toolbar toolbar = (Toolbar) findViewById(R.id.store_toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
         ViewPager viewPager = (ViewPager)findViewById(R.id.Store_Viewpager);
         Store_TabAdapter adapter= new Store_TabAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
